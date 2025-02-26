@@ -40,7 +40,7 @@ const requestListener = async (req, res) => {
       ))
       res.end();
     } catch (error) {
-
+      errHandle(res, 500, '伺服器錯誤');
     }
 
   } else if (req.url.startsWith("/api/credit-package/") && req.method === "DELETE") {
