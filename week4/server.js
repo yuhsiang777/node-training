@@ -31,35 +31,44 @@ const requestListener = async (req, res) => {
       errHandle(res, 500, '伺服器錯誤');
     }
   } else if (req.url === "/api/credit-package" && req.method === "POST") {
-    try {
-      res.writeHead(201, headers)
-      res.write(JSON.stringify(
-        {
-          'message': '新增購買方案'
+    req.on("end", async () => {
+      try {
+        if (
+          isUndefined(data.name) || isNotValidString(data.name) ||
+          isUndefined(data.credit_amount) || isNotValidInteger(data.credit_amount) ||
+          isUndefined(data.price) || isNotValidInteger(data.price)
+        ) {
+          errHandle(res, 400, 'failed', '欄位未填寫正確');
+          return
         }
-      ))
-      res.end();
-    } catch (error) {
-      errHandle(res, 500, '伺服器錯誤');
-    }
-
-  } else if (req.url.startsWith("/api/credit-package/") && req.method === "DELETE") {
-    // 刪除購買方案邏輯
-    // 根據 creditPackageId 來刪除指定方案
-    res.writeHead(200, headers)
-    res.write(JSON.stringify(
-      {
-        'message': '刪除購買方案'
+        const creditPackageRepo = await AppDataSource.getRepository('CreditPackage')
+        const existPackage = await creditPackageRepo.find({
+          where: {
+            name: data.name
+          }
+        })
+        if (existPackage.length > 0) {
+          errHandle(res, 409, 'failed', '資料重複');
+          return
+        }
+        const newPackage = await creditPackageRepo.create(
+          {
+            name: data.name,
+            credit_amount: data.credit_amount,
+            price: data.price
+          }
+        )
+        const result = await creditPackageRepo.save(newPackage)
+        res.writeHead(200, headers)
+        res.write(JSON.stringify({
+          status: "success",
+          data: result
+        }))
+        res.end()
+      } catch (error) {
+        errHandle(res, 500, 'failed', '伺服器錯誤');
       }
-    ))
-    res.end();
-  } else if (req.method === "OPTIONS") {
-    res.writeHead(200, headers)
-    res.end();
-  } else {
-    errHandle(res, 404, '無此網站路由');
-  }
-}
+    })
 
 //  啟動伺服器
 const server = http.createServer(requestListener)
