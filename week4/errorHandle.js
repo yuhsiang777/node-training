@@ -1,10 +1,10 @@
 const headers = require("./headers");
 
-function errorHandle(res, statusCode, message) {
+function errorHandle(res, statusCode, status, message) {
   res.writeHead(statusCode, headers);
   res.write(JSON.stringify(
     {
-      'status': 'error',
+      'status': status,
       'messahe': message
     }
   ));
