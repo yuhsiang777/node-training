@@ -5,7 +5,7 @@ function errorHandle(res, statusCode, status, message) {
   res.write(JSON.stringify(
     {
       'status': status,
-      'messahe': message
+      'message': message
     }
   ));
   res.end();
