@@ -28,11 +28,12 @@ const requestListener = async (req, res) => {
       ))
       res.end();
     } catch (error) {
-      errHandle(res, 500, '伺服器錯誤');
+      errHandle(res, 500, 'error', '伺服器錯誤');
     }
   } else if (req.url === "/api/credit-package" && req.method === "POST") {
     req.on("end", async () => {
       try {
+        //  const data = JSON.parse(body);
         if (
           isUndefined(data.name) || isNotValidString(data.name) ||
           isUndefined(data.credit_amount) || isNotValidInteger(data.credit_amount) ||
@@ -69,6 +70,36 @@ const requestListener = async (req, res) => {
         errHandle(res, 500, 'failed', '伺服器錯誤');
       }
     })
+  } else if (req.url.startsWith("/api/credit-package/") && req.method === "DELETE") {
+    try {
+      const packageId = req.url.split('/').pop();
+      if (isUndefined(packageId) || isNotValidString(packageId)) {
+        errHandle(res, 400, 'failed', 'ID錯誤');
+        return
+      }
+      const result = await AppDataSource.getRepository('CreditPackage').delete(packageId)
+      if (result.affected === 0) {
+        errHandle(res, 400, 'failed', 'ID錯誤');
+        return
+      }
+      res.writeHead(200, headers)
+      res.write(JSON.stringify(
+        {
+          'message': '刪除購買方案'
+        }
+      ))
+      res.end();
+    }
+    catch (error) {
+      errHandle(res, 500, 'error', '伺服器錯誤');
+    }
+  } else if (req.method === "OPTIONS") {
+    res.writeHead(200, headers)
+    res.end();
+  } else {
+    errHandle(res, 404, 'failed', '無此網站路由');
+  }
+}
 
 //  啟動伺服器
 const server = http.createServer(requestListener)
