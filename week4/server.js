@@ -33,7 +33,7 @@ const requestListener = async (req, res) => {
   } else if (req.url === "/api/credit-package" && req.method === "POST") {
     req.on("end", async () => {
       try {
-        //  const data = JSON.parse(body);
+        const data = JSON.parse(body);
         if (
           isUndefined(data.name) || isNotValidString(data.name) ||
           isUndefined(data.credit_amount) || isNotValidInteger(data.credit_amount) ||
@@ -111,7 +111,7 @@ const requestListener = async (req, res) => {
     req.on("end", async () => {
       try {
         const data = JSON.parse(body);
-        if (isUndefined(data.name) || isNotValidSting(data.name)) {
+        if (isUndefined(data.name) || isNotValidString(data.name)) {
           errHandle(res, 400, 'failed', '欄位未填寫正確');
           return
         }
@@ -142,7 +142,7 @@ const requestListener = async (req, res) => {
   } else if (req.url.startsWith("/api/coaches/skill/") && req.method === "DELETE") {
     try {
       const skillId = req.url.split("/").pop();
-      if (isUndefined(skillId) || isNotValidSting(skillId)) {
+      if (isUndefined(skillId) || isNotValidString(skillId)) {
         errHandle(res, 400, 'failed', 'ID錯誤');
         return
       }
@@ -175,7 +175,7 @@ async function startServer() {
   try {
     await AppDataSource.initialize(); // 初始化資料庫
     console.log("資料庫連接成功");
-    server.listen(process.env.PORT || 3005); // 設定伺服器端口
+    server.listen(process.env.PORT || 8080); // 設定伺服器端口
     console.log(`伺服器啟動成功, port: ${process.env.PORT}`);
   } catch (error) {
     console.error("資料庫連接失敗:", error);
