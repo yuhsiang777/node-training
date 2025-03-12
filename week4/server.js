@@ -93,7 +93,7 @@ const requestListener = async (req, res) => {
     catch (error) {
       errHandle(res, 500, 'error', '伺服器錯誤');
     }
-  }else if (req.url === "/api/coaches/skill" && req.method === "GET") { // 設定 教練資訊
+  } else if (req.url === "/api/coaches/skill" && req.method === "GET") { // 設定 教練資訊
     try {
       const skills = await AppDataSource.getRepository("Skill").find({
         select: ["id", "name"]
@@ -160,7 +160,7 @@ const requestListener = async (req, res) => {
     } catch (error) {
       errHandle(res, 500, 'error', '伺服器錯誤');
     }
-  }  else if (req.method === "OPTIONS") {
+  } else if (req.method === "OPTIONS") {
     res.writeHead(200, headers)
     res.end();
   } else {
