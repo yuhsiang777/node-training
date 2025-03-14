@@ -42,7 +42,8 @@ router.post('/', async (req, res, next) => {
     })
     if (existPackage.length > 0) {
       res.status(409).json({
-        'failed': '資料重複'
+        "status": 'failed',
+        "message": '資料重複'
       });
       return
     }
@@ -68,13 +69,15 @@ router.delete('/:creditPackageId', async (req, res, next) => {
     const packageId = req.params;
     if (isUndefined(packageId) || isNotValidString(packageId)) {
       res.status(400).json({
-        'failed': 'ID錯誤'
+        "status": 'failed',
+        "message": 'ID錯誤'
       });
     }
     const result = await dataSource.getRepository('CreditPackage').delete(packageId)
     if (result.affected === 0) {
       res.status(400).json({
-        'failed': 'ID錯誤'
+        "status": 'failed',
+        "message": 'ID錯誤'
       });
       return
     }

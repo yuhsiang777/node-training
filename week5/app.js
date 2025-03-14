@@ -5,6 +5,7 @@ const pinoHttp = require('pino-http')
 
 const logger = require('./utils/logger')('App')
 const creditPackageRouter = require('./routes/creditPackage')
+const skill = require('./routes/skill')
 
 const app = express()
 app.use(cors())
