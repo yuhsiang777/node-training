@@ -29,7 +29,8 @@ router.post('/', async (req, res, next) => {
       isUndefined(data.price) || isNotValidInteger(data.price)
     ) {
       res.status(400).json({
-        'failed': '欄位未填寫正確'
+        "status": "failed",
+        "message": "欄位未填寫正確"
       });
       return
     }

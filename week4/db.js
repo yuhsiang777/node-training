@@ -79,8 +79,4 @@ const AppDataSource = new DataSource({
 
 // 之後就能使用 AppDataSource.getRepository("CreditPackage") 或 AppDataSource.getRepository("Skill") 進行 CRUD。
 
-<<<<<<< HEAD
 module.exports = AppDataSource
-=======
-module.exports = AppDataSource
->>>>>>> c35c9a20e00b18e5514d3fa4981d3d29b7c2e0cd
