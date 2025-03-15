@@ -10,4 +10,9 @@ function isNotValidInteger(value) {
   return typeof value !== 'number' || value <= 0 || value % 1 !== 0;
 }
 
-module.exports = { isUndefined, isNotValidString, isNotValidInteger };
+const isValidPassword = (value) => {
+  const passwordPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}/
+  return passwordPattern.test(value);
+}
+
+module.exports = { isUndefined, isNotValidString, isNotValidInteger,isValidPassword };

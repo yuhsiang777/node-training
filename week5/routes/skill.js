@@ -7,13 +7,13 @@ const { isUndefined, isNotValidString, isNotValidInteger } = require('../utils/v
 
 router.get('/', async (req, res, next) => {
   try {
-    const packages = await dataSource.getRepository("Skill").find({
+    const skills = await dataSource.getRepository("Skill").find({
       select: ["id", "name"]
     });
 
     res.status(200).json({
       status: "success",
-      data: packages
+      data: skills
     })
   } catch (error) {
     next(error)
@@ -42,30 +42,45 @@ router.post('/', async (req, res, next) => {
         "status": "failed",
         "message": "資料重複"
       })
-      
       return
     }
     const newSkill = await skillRepo.create({
       name: data.name
     })
     const result = await skillRepo.save(newSkill)
-    res.status(409).json({
-      "status": "failed",
-      "message": "資料重複"
-    })
-    res.writeHead(200, headers)
-    res.write(JSON.stringify({
+    res.status(200).json({
       status: "success",
       data: result
-    }))
-    res.end()
+    });
   } catch (error) {
     next(error)
   }
 })
 
-router.delete('/:creditPackageId', async (req, res, next) => {
+router.delete('/:skillId', async (req, res, next) => {
   try {
+    const { skillId } = req.params;
+    if (isUndefined(skillId) || isNotValidString(skillId)) {
+      res.status(400).json({
+        "status": "failed",
+        "message": "ID錯誤"
+      })
+      return
+    }
+
+    const result = await dataSource.getRepository("Skill").delete(skillId);
+
+    if (result.affected === 0) {
+      res.status(400).json({
+        "status": "failed",
+        "message": "ID錯誤"
+      })
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: result
+    });
 
   } catch (error) {
     next(error)

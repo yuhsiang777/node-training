@@ -66,14 +66,16 @@ router.post('/', async (req, res, next) => {
 
 router.delete('/:creditPackageId', async (req, res, next) => {
   try {
-    const packageId = req.params;
-    if (isUndefined(packageId) || isNotValidString(packageId)) {
+    const { creditPackageId } = req.params;
+    if (isUndefined(creditPackageId) || isNotValidString(creditPackageId)) {
       res.status(400).json({
         "status": 'failed',
         "message": 'ID錯誤'
       });
+      return
     }
-    const result = await dataSource.getRepository('CreditPackage').delete(packageId)
+
+    const result = await dataSource.getRepository('CreditPackage').delete(creditPackageId)
     if (result.affected === 0) {
       res.status(400).json({
         "status": 'failed',
@@ -81,6 +83,7 @@ router.delete('/:creditPackageId', async (req, res, next) => {
       });
       return
     }
+    
     res.status(200).json({
       'message': '刪除購買方案'
     });

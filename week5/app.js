@@ -5,7 +5,8 @@ const pinoHttp = require('pino-http')
 
 const logger = require('./utils/logger')('App')
 const creditPackageRouter = require('./routes/creditPackage')
-const skill = require('./routes/skill')
+const skillRouter = require('./routes/skill')
+const userRouter = require('./routes/users')
 
 const app = express()
 app.use(cors())
@@ -14,7 +15,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(pinoHttp({
   logger,
   serializers: {
-    req (req) {
+    req(req) {
       req.body = req.raw.body
       return req
     }
@@ -27,6 +28,8 @@ app.get('/healthcheck', (req, res) => {
   res.send('OK')
 })
 app.use('/api/credit-package', creditPackageRouter)
+app.use('/api/coaches/skill', skillRouter)
+app.use('/api/users', userRouter)
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
