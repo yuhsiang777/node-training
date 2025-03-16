@@ -26,12 +26,35 @@ router.post('/signup', async (req, res, next) => {
       return
     }
 
+    const userRepo = dataSource.getRepository('User')
+    const findUser = await userRepo.findOne({
+      where: {
+        email
+      }
+    })
+    if (findUser) {
+      res.status(409).json({
+        status: "failed",
+        message: "Email已被使用"
+      })
+      return
+    }
+
+    const hashPassword = await bcrypt.hash(password, saltRounds)
+    const newUser = userRepo.create({
+      name,
+      password: hashPassword,
+      email,
+      role: 'USER'
+    });
+    const result = await userRepo.save(newUser)
+
     res.status(201).json({
       status: "success",
       data: {
         user: {
-          id: 'result.id',
-          name: 'result.name'
+          id: result.id,
+          name: result.name
         }
       }
     })
