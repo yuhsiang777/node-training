@@ -139,8 +139,8 @@ router.post('/coaches/:userId', async (req, res, next) => {
       status: "success",
       data: {
         user: {
-          name: 'userResult.name',
-          role: 'userResult.role'
+          name: userResult.name,
+          role: userResult.role
         },
         coach: coachResult
       }
