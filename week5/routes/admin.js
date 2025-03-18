@@ -11,9 +11,17 @@ router.post('/coaches/courses', async (req, res, next) => {
     // TODO 可以做檢查日期格式
     // 可以用 moment
     const { user_id, skill_id, name, description, start_at, end_at, max_participants, meeting_url } = req.body
-    if (isNotValidString(user_id) || isNotValidString(skill_id) || isNotValidString(name)
-      || isNotValidString(description) || isNotValidString(start_at) || isNotValidString(end_at)
-      || isNotValidInteger(max_participants) || isNotValidString(meeting_url) || !meeting_url.startsWith('https')) {
+
+    // 驗證 UUID 格式
+    if (!isValidUUID(user_id) || !isValidUUID(skill_id)) {
+      return res.status(400).json({
+        status: "failed",
+        message: "user_id 或 skill_id 格式不正確"
+      });
+    }
+
+    if (isNotValidString(user_id) || isNotValidString(skill_id) || isNotValidString(name) || isNotValidString(description)
+      || isNotValidString(start_at) || isNotValidString(end_at) || meeting_url && !isNotValidString(meeting_url) && !meeting_url.startsWith("https")) {
       res.status(400).json({
         status: "failed",
         message: "欄位未填寫正確"
@@ -33,7 +41,7 @@ router.post('/coaches/courses', async (req, res, next) => {
         message: "使用者不存在"
       })
       return
-    } else if (findUser.role !== 'COACH') {
+    } else if (findUser && findUser.role !=="COACH") {
       res.status(400).json({
         status: "failed",
         message: "使用者尚未成為教練"
@@ -45,12 +53,12 @@ router.post('/coaches/courses', async (req, res, next) => {
     const newCourse = courseRepo.create({
       user_id,
       skill_id,
+      name,
       description,
-      meeting_url,
+      max_participants,
       start_at,
       end_at,
-      name,
-      max_participants,
+      meeting_url
     })
     const result = await courseRepo.save(newCourse)
 
@@ -79,7 +87,7 @@ router.post('/coaches/:userId', async (req, res, next) => {
       })
     }
 
-    if (profile_image_url && isNotValidString(profile_image_url) && !profile_image_url.starstWith('https')) {
+    if (profile_image_url && isNotValidString(profile_image_url) && !profile_image_url.startsWith('https')) {
       res.status(400).json({
         status: "failed",
         message: "欄位未填寫正確"
