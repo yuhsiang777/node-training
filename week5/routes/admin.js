@@ -79,7 +79,7 @@ router.post('/coaches/:userId', async (req, res, next) => {
       })
     }
 
-    if (profile_image_url && isNotValidString(profile_image_url) && !profile_image_url.startWith('https')) {
+    if (profile_image_url && isNotValidString(profile_image_url) && !profile_image_url.starstWith('https')) {
       res.status(400).json({
         status: "failed",
         message: "欄位未填寫正確"
