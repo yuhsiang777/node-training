@@ -83,6 +83,7 @@ router.delete('/:skillId', async (req, res, next) => {
     });
 
   } catch (error) {
+    logger.error(error)
     next(error)
   }
 })
