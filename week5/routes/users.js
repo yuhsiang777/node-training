@@ -7,7 +7,7 @@ const logger = require('../utils/logger')('User')
 
 const { isUndefined, isNotValidString, isNotValidEmail, isNotValidPassword } = require('../utils/validUtils');
 
-const { customErr, correctRes } = require('../utils/resHandle');
+const { sendErrorResponse, sendSuccessResponse } = require('../utils/resHandle');
 
 const saltRounds = 10;
 
