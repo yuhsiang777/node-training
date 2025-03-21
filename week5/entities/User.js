@@ -1,4 +1,4 @@
-const { EntitySchema } = require('typeorm')
+const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
   name: 'User',
@@ -6,8 +6,8 @@ module.exports = new EntitySchema({
   columns: {
     id: {
       primary: true,
-      type: "uuid",
-      generated: "uuid",
+      type: 'uuid',
+      generated: 'uuid',
       nullable: false,
     },
     name: {
@@ -19,7 +19,7 @@ module.exports = new EntitySchema({
       type: 'varchar',
       length: 320, // 長度
       nullable: false, // 是否為空值
-      unique: true // 唯一值
+      unique: true, // 唯一值
     },
     role: {
       type: 'varchar',
@@ -30,17 +30,17 @@ module.exports = new EntitySchema({
       type: 'varchar',
       length: 72,
       nullable: false,
-      select: false
+      select: false, // 密碼欄位不顯示
     },
     created_at: {
       type: 'timestamp',
       nullable: false,
-      createDate: true,
+      createDate: true, // 自動生成創建時間
     },
     updated_at: {
       type: 'timestamp',
       nullable: false,
-      updateDate: true,
-    }
-  }
-})
+      updateDate: true, // 自動更新修改時間
+    },
+  },
+});

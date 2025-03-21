@@ -5,24 +5,24 @@ module.exports = new EntitySchema({
   tableName: 'CREDIT_PACKAGE',
   columns: {
     id: {
-      primary: true,
-      type: 'uuid',
-      generated: 'uuid',
-      nullable: false
+      primary: true,      // 設定為主鍵
+      type: "uuid",       // 主鍵使用UUID
+      generated: "uuid",  // 自動生成UUID
+      nullable: false,    // 不可為空
     },
     name: {
       type: 'varchar',
       length: 50,
       nullable: false,
-      unique: true
+      unique: true        // 必須唯一
     },
     credit_amount: {
       type: 'integer',
       nullable: false
     },
     price: {
-      type: 'numeric',
-      precision: 10,
+      type: 'numeric',    // 類型為小數數字
+      precision: 10,      // 保留精度和小數位數
       scale: 2,
       nullable: false
     },

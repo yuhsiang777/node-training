@@ -14,45 +14,45 @@ module.exports = new EntitySchema({
       type: "uuid",
       nullable: false,
       foreignKey: {
-        name: 'course_user_id_fk',
-        columnNames: ["user_id"],
+        name: 'course_user_id_fk', //fk的名稱
+        columnNames: ['user_id'],
         referenceTableName: 'USER',
-        referenceColumnName: ["id"]
+        referenceColumnName: ['id']
       }
     },
     skill_id: {
-        type: "uuid",
-        nullable: false,
-        foreignKey: {
-          name: 'course_skill_id_fk',
-          columnNames: ["skill_id"],
-          referenceTableName: 'SKILL',
-          referenceColumnName: ["id"]
-        }
+      type: "uuid",
+      nullable: false,
+      foreignKey: {
+        name: 'course_skill_id_fk',
+        columnNames: ['skill_id'],
+        referenceTableName: 'SKILL',
+        referenceColumnName: ['id']
+      }
     },
     name: {
-      type: "varchar",
+      type: 'varchar',
       length: 100,
-      nullable: false,
+      nullable: false
     },
     description: {
-      type: "text",
+      type: 'text',
       nullable: false
     },
     start_at: {
-      type: "timestamp",
+      type: 'timestamp',
       nullable: false
     },
     end_at: {
-        type: "timestamp",
-        nullable: false
+      type: 'timestamp',
+      nullable: false
     },
     max_participants: {
-      type:"integer",
+      type: 'integer',
       nullable: false
     },
     meeting_url: {
-      type: "varchar",
+      type: 'varchar',
       length: 2048,
       nullable: false
     },

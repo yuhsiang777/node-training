@@ -16,15 +16,15 @@ module.exports = new EntitySchema({
       unique: true,
     },
     experience_years: {
-      type: "integer",
+      type: 'integer',
       nullable: false
     },
     description: {
-      type: "text",
+      type: 'text',
       nullable: false
     },
     profile_image_url: {
-      type: "varchar",
+      type: 'varchar',
       length: 2048,
       nullable: true
     },
