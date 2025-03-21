@@ -13,11 +13,14 @@ router.post('/coaches/courses', async (req, res, next) => {
 
     // 驗證欄位有效性
     if (isNotValidString(user_id) || isNotValidString(skill_id) || isNotValidString(name) ||
-      isNotValidString(description) || isNotValidString(start_at) || isNotValidString(end_at) ||
-      !moment(start_at, 'YYYY-MM-DD HH:mm:ss', true).isValid() ||
-      !moment(end_at, 'YYYY-MM-DD HH:mm:ss', true).isValid() ||
-      (meeting_url && isNotValidString(meeting_url))) {
+      isNotValidString(description) || !moment(start_at).isValid() || !moment(end_at).isValid() ||
+      (meeting_url && !meeting_url.startsWith('https://'))) {
       return sendErrorResponse(res, 400, '欄位未填寫正確');
+    }
+
+    // 檢查最大參與人數
+    if (isNotValidInteger(max_participants) || max_participants <= 0) {
+      return sendErrorResponse(res, 400, '最大參與人數無效');
     }
 
     // 檢查使用者是否存在並且是教練角色
@@ -58,8 +61,8 @@ router.put('/coaches/courses/:courseId', async (req, res, next) => {
 
     // 驗證欄位有效性
     if (isNotValidString(courseId) || isNotValidString(skill_id) || isNotValidString(name) ||
-      isNotValidString(description) || isNotValidString(start_at) || isNotValidString(end_at) ||
-      isNotValidInteger(max_participants) || isNotValidString(meeting_url) || !meeting_url.startsWith('https')) {
+      isNotValidString(description) || !moment(start_at).isValid() || !moment(end_at).isValid() ||
+      isNotValidInteger(max_participants) || (meeting_url && !meeting_url.startsWith('https://'))) {
       return sendErrorResponse(res, 400, '欄位未填寫正確');
     }
 
